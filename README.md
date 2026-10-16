@@ -130,10 +130,10 @@ Examines freight-to-sales ratios by category, the relationship between product w
 #### Page 4 — Time Trends & Seasonality
 Shows monthly sales trends, month-over-month changes, category-by-month patterns, and comparisons across time periods.
 
-![Time Trends and Seasonality dashboard](screenshots/4.png)
-
 #### Page 5 — Insights & Actions
-Summarizes evidence-based findings, prioritizes recommendations, and identifies KPIs to track the impact of future actions. Add a fifth screenshot if you want this page represented visually in the README.
+Summarizes evidence-based findings, prioritizes recommendations, and identifies KPIs to track the impact of future actions.
+
+![Time Trends and Seasonality dashboard](screenshots/4.png)
 
 ## Key Findings
 
