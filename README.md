@@ -220,7 +220,7 @@ A recommended structure for the full project is:
 ```text
 Ecommerce_Insights_and_Optimization/
 ├── data/
-│   └── dashboard_data.csv                 # Include only if redistribution is permitted
+│   └── dashboard_data.csv                
 ├── sql/
 │   └── ecommerce_analysis.sql
 ├── python/
@@ -238,8 +238,6 @@ Ecommerce_Insights_and_Optimization/
 │   └── 4.png
 └── README.md
 ```
-
-The filenames above are recommended names. Adjust them to match the files actually included in the repository. Do not list a deliverable as completed unless the corresponding file or analysis is available.
 
 ## How to Use
 
@@ -262,8 +260,7 @@ The next step toward a stronger profitability assessment would be to integrate c
 
 ## Project Deliverables
 
-The project brief defines the following deliverables. Include each item in the repository when the corresponding work is available:
-
+The project brief defines the following deliverables.
 - SQL analysis script
 - Python EDA notebook
 - Excel analysis workbook / management summary
