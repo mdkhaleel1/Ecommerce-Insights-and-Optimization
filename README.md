@@ -70,7 +70,7 @@ Provides an overview of sales performance through KPI cards, a monthly sales tre
 ### 2. Category & Product Performance
 Compares sales value by category, identifies top products, and presents a category scorecard with revenue contribution and rankings.
 
-screenshots/2.png
+![Overview](screenshots/2.png)
 
 ### 3. Shipping Analysis
 Examines freight-to-sales ratios across categories, investigates the relationship between product weight, price, and freight cost, and identifies products with high total freight charges.
@@ -78,12 +78,12 @@ Examines freight-to-sales ratios across categories, investigates the relationshi
 ### 4. Time Trends & Seasonality
 Visualizes monthly sales trends, month-over-month changes, category-by-month performance, and time-based patterns.
 
-screenshots/3.png
+![Overview](screenshots/3.png)
 
 ### 5. Insights & Actions
 Summarizes the key findings, recommends potential optimization actions, and identifies measurable KPIs for further investigation.
 
-screenshots/4.png
+![Overview](screenshots/4.png)
 
 ## Key Findings
 
