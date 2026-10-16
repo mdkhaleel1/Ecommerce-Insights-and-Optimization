@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/33525086/README.md)
 # Ecommerce Insights & Optimization
 
 An end-to-end **data analytics and business intelligence project** that uses **SQL, Python, Excel, and Power BI** to investigate e-commerce category performance, product-level sales, shipping-cost exposure, and time-based sales patterns. The goal is to turn transactional data into evidence-based business findings and practical recommendations.
