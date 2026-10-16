@@ -65,7 +65,7 @@ The following preparation and modeling steps were performed:
 ### 1. Executive Summary
 Provides an overview of sales performance through KPI cards, a monthly sales trend, a Top 10 category chart, and interactive year and category filters.
 
-screenshots/1.png
+![Overview](screenshots/1.png)
 
 ### 2. Category & Product Performance
 Compares sales value by category, identifies top products, and presents a category scorecard with revenue contribution and rankings.
