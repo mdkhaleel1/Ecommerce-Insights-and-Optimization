@@ -1,223 +1,280 @@
+[README.md](https://github.com/user-attachments/files/33525086/README.md)
 # Ecommerce Insights & Optimization
 
-An interactive **Power BI business intelligence project** that analyzes e-commerce sales performance, product categories, shipping costs, and time-based trends to identify business opportunities and support data-driven decision-making.
+An end-to-end **data analytics and business intelligence project** that uses **SQL, Python, Excel, and Power BI** to investigate e-commerce category performance, product-level sales, shipping-cost exposure, and time-based sales patterns. The goal is to turn transactional data into evidence-based business findings and practical recommendations.
 
 ## Project Overview
 
-E-commerce businesses generate large volumes of transaction and product data. However, raw data alone does not explain which categories drive sales, where shipping costs create pressure, or how sales performance changes over time.
+E-commerce teams generate data about orders, products, pricing, shipping, and time-based activity. This project follows the analytics lifecycle—from data inspection and preparation to exploratory analysis, dashboarding, and business recommendations—to answer three central questions:
 
-This project transforms e-commerce data into an interactive Power BI dashboard to help stakeholders understand sales contribution, compare category performance, investigate shipping-cost exposure, and identify opportunities for operational improvement.
+1. Which product categories and products contribute most to recorded sales value?
+2. Which products or categories show a high shipping-cost burden relative to sales?
+3. How does recorded sales activity vary over time, and what should the business investigate further?
 
-The analysis focuses on three primary business questions:
-
-- Which product categories and products contribute the most to recorded sales value?
-- Which categories exhibit a high shipping-cost burden relative to sales?
-- How does recorded sales activity change over time?
+The project brief emphasizes that charts alone are not enough: every major observation should be supported by evidence, interpreted in a business context, and connected to a measurable action.
 
 ## Business Objectives
 
-- Analyze overall sales performance using key performance indicators (KPIs).
-- Identify top-performing product categories and products.
-- Measure shipping costs relative to sales value.
-- Investigate relationships between product attributes and freight costs.
-- Examine monthly sales trends and category-level patterns.
-- Translate analytical findings into practical business recommendations.
-- Communicate results through an interactive, management-oriented dashboard.
+- Inspect, clean, validate, and document the available data.
+- Use SQL to query, join, aggregate, rank, and summarize sales and shipping data.
+- Use Python for exploratory data analysis (EDA), data-quality checks, and analytical visualizations.
+- Use Excel PivotTables, formulas, and summary views to reproduce and validate selected results.
+- Build an interactive Power BI dashboard with reusable DAX measures.
+- Analyze category performance, product concentration, shipping burden, and monthly patterns.
+- Provide actionable recommendations while documenting assumptions and limitations.
 
 ## Tools & Technologies
 
-- **Power BI Desktop** — Interactive dashboards and data visualization
-- **DAX** — Measures, KPI calculations, ranking, percentage contribution, and time-based analysis
-- **Power Query** — Data preparation, filtering, and data-type management
-- **CSV** — Source data format
+| Tool | Role in the project |
+|---|---|
+| **SQL** | Data inspection, joins, filtering, aggregations, category/product rankings, shipping analysis, and date-based analysis. |
+| **Python** | EDA and data auditing with pandas and NumPy; visualizations with matplotlib (and seaborn where useful). |
+| **Excel** | PivotTables for category sales, monthly sales, and shipping by category; formula-based checks and a management summary. |
+| **Power BI** | Interactive report pages, KPI cards, slicers, tables, and charts. |
+| **DAX** | Reusable measures for sales value, freight cost, contribution, ranking, and month-over-month change. |
+| **Power Query** | Data loading, filtering, type conversion, and preparation before reporting. |
+| **CSV** | Source/analytical data format. |
 
 ## Dataset Overview
 
-The project uses a prepared e-commerce analytical dataset, `dashboard_data.csv`.
+The dashboard uses the prepared analytical file `dashboard_data.csv`.
 
 | Attribute | Details |
-|---|---|
+|---|---:|
 | Original records | 57,373 |
-| Records included in the analysis period | 57,284 |
+| Records retained for the analysis period | 57,284 |
 | Product categories | 74 |
 | Distinct products | 21,629 |
-| Main sales metric | Sum of the `price` field |
-| Shipping metric | Sum of the `freight_value` field |
-| Main analysis date | `ship_date`, used as a date proxy |
+| Sales-value field | `price` |
+| Freight field | `freight_value` |
+| Date field used in the dashboard | `ship_date` (a proxy, not a confirmed order date) |
+| Unmatched product-attribute records | Approximately 820 in the analysis-period extract |
 
-The source data contains sales-related, product, seller, shipping, and product-attribute fields. Records outside the defined analysis period were excluded using the `in_analysis_period` flag.
+The project brief describes the underlying data model as order-item transaction data joined to a product master. Field names, keys, units, data types, missing values, duplicate business keys, and the meaning of price and shipping fields should be inspected rather than assumed.
 
-## Data Preparation & Modeling
+## End-to-End Workflow
 
-The following preparation and modeling steps were performed:
+### 1. Data Understanding & Preparation
 
-1. Imported the CSV file into Power BI.
-2. Filtered the data to records marked `in_analysis_period = TRUE`.
-3. Reviewed and assigned appropriate data types to key fields.
-4. Created a calendar table (`DimDate`) for time-based analysis.
-5. Added year, month, month number, and month-year attributes.
-6. Created an active one-to-many relationship between `DimDate[Date]` and `data[ship_date]`.
-7. Developed reusable DAX measures for sales value, freight costs, order counts, line items, average line value, and freight-to-sales percentage.
-8. Built category-level rankings, revenue contribution measures, and time-based calculations.
+- Inspect row counts, columns, data types, sample records, and summary statistics.
+- Check missing values, duplicate rows, duplicate business keys, invalid dates, and unusual numeric values.
+- Validate product identifiers and investigate unmatched product records.
+- Standardize data types, dates, and category values where needed.
+- Confirm units for product weight and dimensions.
+- Join transaction and product attributes using the validated product key.
+- Document transformation rules and compare key totals before and after data preparation.
 
-## Dashboard Pages
+### 2. SQL Analysis
 
-### 1. Executive Summary
-Provides an overview of sales performance through KPI cards, a monthly sales trend, a Top 10 category chart, and interactive year and category filters.
+SQL supports structured analysis and repeatable aggregations. The workflow follows the project brief's SQL requirements, including:
 
-![Overview](screenshots/1.png)
+- `SELECT`, `WHERE`, `ORDER BY`, `GROUP BY`, and `HAVING`
+- Aggregate functions such as `SUM`, `COUNT`, `AVG`, `MIN`, and `MAX`
+- `INNER JOIN` and `LEFT JOIN` for combining transaction and product data and investigating unmatched keys
+- `CASE WHEN`, subqueries, and common table expressions (CTEs)
+- Date functions for monthly and yearly analysis
+- Window functions such as `RANK`, `DENSE_RANK`, and `LAG`
+- Safe division and null handling
 
-### 2. Category & Product Performance
-Compares sales value by category, identifies top products, and presents a category scorecard with revenue contribution and rankings.
+**Business analyses:** category sales value, top products, category rankings, shipping cost and shipping-to-sales ratio, monthly totals, peak period identification, and month-over-month change. Metric definitions depend on the validated grain and meaning of the available fields.
 
-![Overview](screenshots/2.png)
+### 3. Python Exploratory Data Analysis (EDA)
 
-### 3. Shipping Analysis
-Examines freight-to-sales ratios across categories, investigates the relationship between product weight, price, and freight cost, and identifies products with high total freight charges.
+Python is used to inspect data quality and explore patterns before communicating findings. The EDA workflow is organized as:
 
-### 4. Time Trends & Seasonality
-Visualizes monthly sales trends, month-over-month changes, category-by-month performance, and time-based patterns.
+1. Load data and inspect dataset shape and sample records.
+2. Audit data types, missing values, duplicates, and descriptive statistics.
+3. Clean and standardize fields where justified; inspect outliers rather than silently removing them.
+4. Merge transaction and product information using a validated key.
+5. Create and validate analytical metrics.
+6. Explore category performance, shipping burden, product attributes, and monthly patterns.
+7. Create charts with descriptive titles, meaningful units, and written interpretation.
+8. Translate findings into business implications and potential actions.
 
-![Overview](screenshots/3.png)
+Expected analyses include category sales charts, top-product rankings, monthly trends, product weight versus freight, price versus freight, shipping-cost distributions, and revenue-contribution analysis.
 
-### 5. Insights & Actions
-Summarizes the key findings, recommends potential optimization actions, and identifies measurable KPIs for further investigation.
+### 4. Excel Analysis & Validation
 
-![Overview](screenshots/4.png)
+Excel is used to reproduce selected analyses and create a spreadsheet-friendly summary for business users. The project brief specifies:
+
+- PivotTable for category sales value
+- PivotTable for monthly sales value
+- PivotTable for shipping cost by category
+- Appropriate formulas such as `SUMIFS`, `COUNTIFS`, `AVERAGEIFS`, and `XLOOKUP` (or `INDEX/MATCH`)
+- A compact management summary with 4–6 KPIs and 3–5 charts
+- Structured tables or data validation where useful
+- Documentation of the source data and refresh process
+
+Excel outputs can also be used as a cross-check for selected SQL and Power BI totals.
+
+### 5. Power BI Dashboard
+
+The Power BI model includes a calendar table (`DimDate`) related to `data[ship_date]` through an active one-to-many relationship. Date attributes support year, month, month number, and month-year analysis. DAX measures support the KPI cards, category comparisons, and monthly metrics.
+
+The report is organized into five pages:
+
+#### Page 1 — Executive Summary
+An at-a-glance view of sales value, freight cost, order and line-item metrics, freight-to-sales ratio, average line value, monthly trend, leading category, and year/category filters.
+
+![Executive Summary dashboard](screenshots/1.png)
+
+#### Page 2 — Category & Product Performance
+Compares sales value by category, identifies top products, and presents a category scorecard with revenue share and ranking.
+
+![Category and Product Performance dashboard](screenshots/2.png)
+
+#### Page 3 — Shipping Analysis
+Examines freight-to-sales ratios by category, the relationship between product weight and freight, price versus freight, and products with high total freight charges.
+
+![Shipping Analysis dashboard](screenshots/3.png)
+
+#### Page 4 — Time Trends & Seasonality
+Shows monthly sales trends, month-over-month changes, category-by-month patterns, and comparisons across time periods.
+
+![Time Trends and Seasonality dashboard](screenshots/4.png)
+
+#### Page 5 — Insights & Actions
+Summarizes evidence-based findings, prioritizes recommendations, and identifies KPIs to track the impact of future actions. Add a fifth screenshot if you want this page represented visually in the README.
 
 ## Key Findings
 
-The findings below are based on the supplied analysis-period data.
+The following figures are based on the supplied analysis-period data and project analysis notes. Values are rounded for readability.
 
-### 1. Sales value and freight exposure
+### Sales value and freight exposure
 
-- **Recorded sales value:** approximately R$6.88 million.
-- **Total freight charges:** approximately R$1.15 million.
-- **Freight-to-sales ratio:** approximately 16.65%.
+- **Recorded sales value:** approximately **R$6.88 million**.
+- **Total freight charges:** approximately **R$1.15 million**.
+- **Freight-to-sales ratio:** approximately **16.65%**.
 
-Freight charges represent a material share of recorded sales value. This makes shipping efficiency an important area for further investigation.
+Freight represents a meaningful share of recorded sales value and should be examined alongside category performance and sales volume.
 
-### 2. Revenue concentration
+### Revenue concentration and leading categories
 
-The top five product categories contribute approximately **39.4%** of total recorded sales value, while the top ten contribute approximately **62.1%**.
+- The top five categories contribute approximately **39.4%** of recorded sales value.
+- The top ten categories contribute approximately **62.1%**.
+- **Watches & Gifts** is the highest-revenue category, at approximately **R$625,000** (about **9.1%** of sales value).
+- **Health & Beauty** contributes approximately **R$618,000** (about **9.0%**).
 
-This concentration suggests that product availability, assortment planning, and promotional decisions in leading categories deserve particular attention.
+This concentration suggests that availability, assortment planning, and promotion decisions in leading categories merit attention.
 
-### 3. Leading categories
+### Categories with elevated freight-to-sales ratios
 
-**Watches & Gifts** is the highest-revenue category in the supplied analysis, contributing approximately R$625,000, or 9.1% of total sales value.
+The supplied analysis notes elevated ratios for categories including:
 
-**Health & Beauty** is another leading category, with approximately R$618,000 in recorded sales value.
+- Electronics: approximately **31.7%**
+- Office Furniture: approximately **25.8%**
+- Furniture & Decor: approximately **23.6%**
+- Housewares: approximately **23.0%**
+- Bed/Bath/Table: approximately **19.8%**
 
-### 4. Categories with elevated shipping burden
+These are candidates for further investigation, not proof of poor profitability. Ratios should be reviewed with order counts and other available operational factors.
 
-Several categories exhibit high freight-to-sales ratios:
+### Time patterns and product characteristics
 
-- Electronics: approximately 31.7%.
-- Office Furniture: approximately 25.8%.
-- Furniture & Decor: approximately 23.6%.
-- Housewares: approximately 23.0%.
-- Bed/Bath/Table: approximately 19.8%.
+- **May 2018** recorded the highest monthly sales value in the supplied analysis, at approximately **R$567,000**.
+- The supplied analysis notes a moderate positive association between product weight and freight cost (Spearman correlation approximately **0.45**) and between price and freight (approximately **0.44**).
 
-These categories are candidates for closer review of packaging, carrier pricing, shipping terms, and minimum-order thresholds. Their ratios should be assessed alongside order volumes and other available operational variables.
-
-### 5. Monthly sales patterns
-
-May 2018 recorded the highest monthly sales value in the supplied analysis, at approximately R$567,000.
-
-The monthly trend can help identify periods worth investigating for inventory and promotional planning. However, the available date field represents a shipping-deadline proxy rather than a confirmed order date, so these patterns should not be treated as definitive order-date seasonality.
-
-### 6. Product attributes and freight
-
-The supplied analysis reports a moderate positive association between product weight and freight cost (Spearman correlation approximately 0.45). Price and freight also show a positive association (approximately 0.44).
-
-These relationships are exploratory and do not prove causation. Other factors, such as dimensions, destination, carrier, and shipping service level, may also influence freight charges.
+These relationships are exploratory. Correlation does not prove causation, and the date field is a shipping-deadline proxy rather than a confirmed order date.
 
 ## Business Recommendations
 
-| Area | Recommended action | Suggested KPI |
+| Priority area | Recommended action | KPI to monitor |
 |---|---|---|
-| Shipping optimization | Investigate carrier pricing, packaging, and shipping thresholds for high-burden categories. | Freight-to-sales ratio |
-| Category management | Protect availability and review promotion plans for leading categories. | Category revenue share and stock-out rate |
-| Product strategy | Investigate the demand drivers of Watches & Gifts and Health & Beauty. | Sales value and campaign return |
-| Time-based planning | Investigate the drivers behind observed monthly peaks before adjusting inventory plans. | Monthly sales value and stock availability |
+| Shipping optimization | Investigate carrier pricing, packaging, shipping service, and minimum-order thresholds for high-burden categories. | Freight-to-sales ratio; freight per line |
+| Category management | Protect availability for leading categories and review the promotion calendar. | Category revenue share; stock-out rate |
+| Product strategy | Investigate the drivers of performance in Watches & Gifts and Health & Beauty. | Sales value; campaign return where available |
+| Time-based planning | Validate the drivers of monthly peaks before adjusting stock or campaigns. | Monthly sales value; stock availability |
 | Data quality | Validate product identifiers and resolve unmatched product attributes during ingestion. | Unmatched-record rate |
 
-These actions are proposed opportunities, not guaranteed savings. Their impact should be evaluated using before-and-after measurements and appropriate operational data.
+These are proposed actions, not guaranteed savings. Their impact should be evaluated with before-and-after measurements and relevant operational data.
 
-## Key DAX Measures
+## Key Metrics & DAX Measures
 
-The project uses reusable DAX measures, including:
+The Power BI dashboard uses measures such as:
 
-- `Revenue` — Sum of the `price` field.
-- `Freight Cost` — Sum of the `freight_value` field.
-- `Orders` — Distinct count of `order_id`.
-- `Line Items` — Count of records in the analytical table.
-- `Avg Line Value` — Recorded sales value divided by line-item count.
-- `Freight-to-Sales %` — Freight cost divided by recorded sales value.
-- `Revenue Share %` — Category revenue as a proportion of revenue across categories.
-- `Revenue Rank` — Category ranking by sales value.
-- `Revenue MoM %` — Month-over-month change in recorded sales value.
+- `Revenue` — `SUM(data[price])`
+- `Freight Cost` — `SUM(data[freight_value])`
+- `Orders` — distinct count of `order_id`
+- `Line Items` — count of rows in the analytical table
+- `Avg Line Value` — recorded sales value divided by line-item count
+- `Freight-to-Sales %` — freight cost divided by recorded sales value
+- `Freight per Line` — freight cost divided by line-item count
+- `Revenue Share %` — category sales value as a proportion of total sales value under the relevant filter context
+- `Revenue Rank` — category rank by recorded sales value
+- `Revenue MoM %` — month-over-month change in recorded sales value
 
-## Limitations
+## Limitations & Assumptions
 
-The results should be interpreted with the following limitations in mind:
-
-- **Sales value is not profit.** The dataset does not provide all required cost, discount, return, and margin information needed to calculate actual accounting profit.
-- **Date limitation.** `ship_date` is a shipping-deadline proxy, not a confirmed order date.
-- **Quantity limitation.** A dedicated quantity field is unavailable in the analytical dataset. Line-item counts should not automatically be interpreted as verified physical units sold.
-- **Order-grain limitation.** The supplied extract reports each `order_id` as unique. Order-level metrics should be validated against the underlying source before being interpreted as representative transaction volume.
-- **Product matching.** Approximately 820 analysis-period records have unmatched product attributes, limiting some category and weight analyses.
-- **Correlation is not causation.** Associations between weight, price, and freight do not establish causal relationships.
-- **Short time horizon.** The available period is insufficient to establish robust recurring seasonal patterns on its own.
-
-## Conclusion
-
-This project demonstrates how raw e-commerce data can be transformed into interactive business intelligence using Power BI and DAX.
-
-The analysis identifies the categories contributing most to recorded sales value, quantifies shipping-cost exposure, investigates product characteristics associated with freight, and highlights monthly patterns that merit further investigation.
-
-The main business takeaway is that **sales contribution and shipping efficiency should be evaluated together**. High-revenue categories may deserve continued commercial attention, while categories with elevated freight-to-sales ratios warrant closer operational review.
-
-The dashboard provides a foundation for data-driven decisions, while the documented assumptions and limitations identify what additional information is needed for stronger profitability analysis.
+- **Sales value is not profit.** Cost of goods sold, complete margin information, discounts, returns, taxes, and other costs are not available in the supplied analytical dataset.
+- **Date proxy.** `ship_date` represents a shipping-deadline proxy, not a confirmed order date; time patterns should be described accordingly.
+- **Quantity field.** A dedicated quantity column is unavailable in the prepared analytical file. Line-item counts are not automatically equivalent to verified physical units sold.
+- **Order grain.** The supplied extract reports each `order_id` as unique. Validate the source grain before interpreting the Orders measure as transaction volume or calling average line value “average order value.”
+- **Unmatched product attributes.** Approximately 820 analysis-period records lack matched product attributes, limiting some category and weight analyses.
+- **Shipping definitions.** Confirm whether freight is stored per line item, order, or product before generalizing the metric beyond this prepared dataset.
+- **Association versus causation.** Product weight or price associations do not prove they cause higher freight charges.
+- **Seasonality.** A limited historical window cannot by itself prove recurring seasonality; one-time spikes and data issues should be investigated.
 
 ## Repository Structure
 
-A suggested structure for the repository is:
+A recommended structure for the full project is:
 
 ```text
 Ecommerce_Insights_and_Optimization/
+├── data/
+│   └── dashboard_data.csv                 # Include only if redistribution is permitted
+├── sql/
+│   └── ecommerce_analysis.sql
+├── python/
+│   └── ecommerce_eda.ipynb
+├── excel/
+│   └── ecommerce_analysis.xlsx
 ├── dashboard/
 │   └── Ecommerce_Insights_and_Optimization.pbix
-├── data/
-│   └── dashboard_data.csv
 ├── report/
 │   └── Ecommerce_Insights_and_Optimization_Final_Report.pdf
+├── screenshots/
+│   ├── 1.png
+│   ├── 2.png
+│   ├── 3.png
+│   └── 4.png
 └── README.md
 ```
 
-Add each file to the repository only if you intend to share it. If the source dataset cannot be redistributed, exclude it and document how authorized users can obtain it.
+The filenames above are recommended names. Adjust them to match the files actually included in the repository. Do not list a deliverable as completed unless the corresponding file or analysis is available.
 
 ## How to Use
 
-1. Clone or download this repository.
-2. Open `dashboard/Ecommerce_Insights_and_Optimization.pbix` in Power BI Desktop.
-3. If Power BI requests the source file, update the data source path to your local copy of `dashboard_data.csv`.
-4. Refresh the data if the source file is available.
-5. Explore the dashboard pages and use the available slicers to investigate different categories and time periods.
-6. Refer to the final PDF report for detailed findings, recommendations, and limitations.
+1. Clone or download the repository.
+2. Open the SQL script in your SQL environment and configure the source tables or paths as documented in the script.
+3. Open and run the Python notebook from top to bottom, updating data paths if needed.
+4. Open the Excel workbook to review PivotTables and summary analysis.
+5. Open `dashboard/Ecommerce_Insights_and_Optimization.pbix` in Power BI Desktop.
+6. If prompted, update the data source path to the local analytical CSV and refresh the model.
+7. Explore the dashboard using the year and category slicers.
+8. Read the final report for the business findings, recommended actions, assumptions, and limitations.
+
+## Conclusion
+
+This project follows an end-to-end analytics approach: **SQL** supports structured querying and aggregation, **Python** supports exploratory analysis and visualization, **Excel** supports validation and management-friendly summaries, and **Power BI** communicates the results through an interactive dashboard.
+
+The analysis indicates that sales value is concentrated in a relatively small set of categories and that freight charges are a meaningful proportion of recorded sales value. Combining category contribution with normalized shipping metrics provides a more useful decision basis than looking at total sales or total freight alone. The results also highlight the importance of data quality, validated metric definitions, and transparent limitations.
+
+The next step toward a stronger profitability assessment would be to integrate cost of goods sold, discount and return data, confirmed order dates, and fuller shipping information such as destination, carrier, dimensions, and service level.
 
 ## Project Deliverables
 
-- Interactive Power BI dashboard (`.pbix`)
-- Final analytical report (`.pdf`)
-- Data preparation and DAX-based KPI calculations
-- Evidence-based findings and business recommendations
+The project brief defines the following deliverables. Include each item in the repository when the corresponding work is available:
+
+- SQL analysis script
+- Python EDA notebook
+- Excel analysis workbook / management summary
+- Power BI dashboard
+- Final report with evidence-based insights and recommendations
+- Data dictionary documenting definitions, assumptions, and quality issues
 
 ---
 
 ## Author
 
-**Md Khaleel Ur Rahman**
-
-Data Analytics | Business Intelligence | Power BI | DAX | Data Visualization
+**Md Khaleel Ur Rahman**  
+Data Analytics | SQL | Python | Excel | Power BI | DAX | Business Intelligence
