@@ -4,7 +4,7 @@ An end-to-end **data analytics and business intelligence project** that uses **S
 
 ## Project Overview
 
-E-commerce teams generate data about orders, products, pricing, shipping, and time-based activity. This project follows the analytics lifecycle—from data inspection and preparation to exploratory analysis, dashboarding, and business recommendations—to answer three central questions:
+E-commerce teams generate data about orders, products, pricing, shipping, and time based activity. This project follows the analytics lifecycle from data inspection and preparation to exploratory analysis, dashboarding, and business recommendations to answer three central questions:
 
 1. Which product categories and products contribute most to recorded sales value?
 2. Which products or categories show a high shipping-cost burden relative to sales?
